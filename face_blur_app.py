@@ -61,7 +61,7 @@ def select_faces(frame, boxes):
     cv2.destroyWindow("Select Faces")
     print("Selected faces (centers):", selected_faces)
 
-def is_face_selected(center_x, center_y, selected_faces, tolerance=20):
+def is_face_selected(center_x, center_y, selected_faces, tolerance=30):
     for sel_x, sel_y in selected_faces:
         if abs(center_x - sel_x) < tolerance and abs(center_y - sel_y) < tolerance:
             return True
@@ -74,6 +74,12 @@ def apply_circular_blur(image, x1, y1, x2, y2, sigma):
     head_height = y2 - y1
     radius = int(max(head_width, head_height) * 0.55)
 
+    # Scale kernel size with face size and sigma, ensuring it’s odd
+    base_kernel = int(max(head_width, head_height) * 0.2)  # 20% of larger dimension
+    kernel_size = max(base_kernel, int(sigma * 3))  # Ensure kernel supports sigma
+    kernel_size = kernel_size | 1  # Make odd
+    kernel_size = min(kernel_size, 51)  # Cap at 51x51 for performance
+
     mask = np.zeros_like(image, dtype=np.uint8)
     cv2.circle(mask, (center_x, center_y), radius, (255, 255, 255), -1)
 
@@ -82,8 +88,7 @@ def apply_circular_blur(image, x1, y1, x2, y2, sigma):
     if blur_region.size == 0:
         return image
 
-    kernel_size = (min(max(radius // 3, 3), 15) | 1, min(max(radius // 3, 3), 15) | 1)
-    blurred_region = cv2.GaussianBlur(blur_region, kernel_size, sigma)
+    blurred_region = cv2.GaussianBlur(blur_region, (kernel_size, kernel_size), sigma)
 
     result = image.copy()
     region_y1, region_y2 = max(0, center_y-radius), min(image.shape[0], center_y+radius)
@@ -114,6 +119,7 @@ def blur_faces_in_video(input_path, output_path, sigma):
     select_faces(frame, boxes)
 
     cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
+    frame_count = 0
 
     while cap.isOpened():
         ret, frame = cap.read()
@@ -128,9 +134,13 @@ def blur_faces_in_video(input_path, output_path, sigma):
                 frame = apply_circular_blur(frame, x1, y1, x2, y2, sigma)
 
         out.write(frame)
+        frame_count += 1
+        if frame_count % 100 == 0:
+            print(f"Processed {frame_count} frames")
 
     cap.release()
     out.release()
+    print(f"Video processing complete. Total frames: {frame_count}")
 
 def blur_faces_in_image(input_path, output_path, sigma):
     image = cv2.imread(input_path)
@@ -190,7 +200,7 @@ blur_label.pack(pady=5)
 
 blur_slider = tk.Scale(root, from_=1, to=20, orient=tk.HORIZONTAL, length=200, 
                        command=update_blur_sigma, resolution=0.5)
-blur_slider.set(blur_sigma)  # Default value
+blur_slider.set(blur_sigma)
 blur_slider.pack(pady=5)
 
 root.mainloop()
