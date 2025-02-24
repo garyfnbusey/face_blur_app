@@ -60,5 +60,3 @@ Current Setting: At 5, it should match what you’ve seen so far.
 **Customization**
 Range: If 1-20 isn’t enough, adjust `from_` and `to_` in the slider (e.g., 0.5 to 30).
 
-TODO:
-Kernel Size Option: If you’d rather control kernel size, I could add another slider for that. Will see if it's needed
