@@ -1,7 +1,5 @@
 # face_blur_app
 
-inspired by a similar tool created by https://civitai.com/user/K3NK. I've made improvements so that it suits my needs.
-
 This is intended to be used when creating a LoRa dataset. Many users have xperimented with training by censoring faces, and the results were significantly better compared to previous training sessions using uncensored faces.
 This approach effectively eliminated any potential bias related to the faces present in the dataset. This technique was already known and applied by some users during the training of other image generation models, and it appears to work well with HunYuan as well.
 
