@@ -1,6 +1,10 @@
 # face_blur_app
 Python app w/ GUI to select faces to blur from a directory of images/videos. Can determine blur strength. The blurred faces will not overlap the excluded subject (in my testing)
 
+![GUI.png](sample/GUI.png)
+![GUI.png](sample/select.png)
+![img.jpg](sample/1000_F_116573479_zks7Zu58thbbsLjl1MpjFOy3431LZiQO.jpg)
+
 ## INSTALLATION
 
 1. Clone repo
