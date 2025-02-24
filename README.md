@@ -63,7 +63,7 @@ Test: The blur strength applies to all processed files in that run.
 **Testing:**
 Light Blur: Set to 1 or 2—faces should be slightly softened but recognizable.
 Heavy Blur: Set to 15 or 20—faces should be completely obscured.
-Current Setting: At 5, it should match what you’ve seen so far.
+Current Setting: At 5, **but I usually use 20**
 
 **Customization**
 Range: If 1-20 isn’t enough, adjust `from_` and `to_` in the slider (e.g., 0.5 to 30).
