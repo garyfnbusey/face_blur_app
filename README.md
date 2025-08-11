@@ -2,13 +2,16 @@
 
 This tool was originally created to blur all faces EXCEPT the subject, but if you are training a dataset which will include no faces, here is some guidance:
 
-Sensual_Pixels Sensual_Pixels I created the tool, I can shed some insight. I made the tool to blur all faces EXCEPT the subject, so no issue there. To train a dataset with no faces here's what you do:
+```
 Most importantly - caption the images saying the faces are blurred.
 Next you can include some images where the face is cropped out, focusing only on the body. Include a lot of these.
 Next for some images obscure the face with a colored shape. Maybe a few white circles, and couple green triangles, etc. You don't even have to obscure the whole face. Probably ok to even leave a couple un-obscured. Update captions accordingly - "a picture of a woman with an hourglass body whose face is censored by a green triangle"
 
 
 Now your dataset has some variation, and during training the model will LEARN the parts that it should focus on. The point of including the faces obscured is to show that you want to generate full people, not just bodies. And the variation in the blur/censoring won't let it pick up one specific method and include it in the final LoRa. I have had lots of success with this, never even need to put censored/blurred in the negative prompt and never seen censored face show up.
+```
+
+
 
 This is intended to be used when creating a LoRa dataset. Many users have xperimented with training by censoring faces, and the results were significantly better compared to previous training sessions using uncensored faces.
 This approach effectively eliminated any potential bias related to the faces present in the dataset. This technique was already known and applied by some users during the training of other image generation models, and it appears to work well with HunYuan as well.
